@@ -1,28 +1,32 @@
-deck = expand.grid(
-  c(2:10, 'J', 'Q', 'K', 'A')
-  ,c('spades', 'hearts', 'diamonds', 'clubs')
-)
-
-deck = paste0(deck$Var1, ' (', deck$Var2, ')')
-
-players = list(
-  north = c()
-  ,east = c()
-  ,south = c()
-  ,west = c()
-)
-
-for (i in seq_along(players)) {
-  players[[i]] = sample(deck, 13, replace = FALSE)
-  deck = setdiff(deck, players[[i]])
+shuffle_cards = function(){
+  
+  deck = expand.grid(
+    figures = c(2:10, 'J', 'Q', 'K', 'A')
+    ,colors = c('spades', 'hearts', 'diamonds', 'clubs')
+  )
+  
+  deck = paste0(deck$figures, ' (', deck$colors, ')')
+  
+  players = list(
+    north = c()
+    ,east = c()
+    ,south = c()
+    ,west = c()
+  )
+  
+  for (i in seq_along(players)) {
+    players[[i]] = sample(deck, 13, replace = FALSE)
+    deck = setdiff(deck, players[[i]])
+  }
+  
+  return(players)
+  
 }
 
 calculate_hcp = function(hand) {
   hcp = 1 * length(grep('J', hand)) + 2 * length(grep('Q', hand)) + 3 * length(grep('K', hand)) + 4 * length(grep('A', hand))
   return(hcp)
 }
-
-sapply(players, calculate_hcp)
 
 count_suits = function(hand) {
   spades = length(grep('spades', hand))
@@ -32,7 +36,7 @@ count_suits = function(hand) {
   return(list(spades = spades, hearts = hearts, diamonds = diamonds, clubs = clubs))
 }
 
-sapply(players, count_suits)
+# sapply(players, count_suits)
 #test: rowSums = 13, colSums = 13
 
 # Openings
@@ -49,6 +53,12 @@ open_bid = function(hand){
     return('1 diamonds')
   } else if (suits$clubs >= 2 & hcp >= 12 & hcp <= 18) {
     return('1 clubs')
+  } else if (suits$spades >= 2 & suits$spades <= 4 & 
+             suits$hearts >= 2 & suits$hearts <= 4 & 
+             suits$diamonds >= 2 & suits$diamonds <= 4 &
+             suits$clubs >= 2 & suits$clubs <= 4 &
+             hcp >= 16 & hcp <= 18) {
+    return('1 NT')
     
   } else if (suits$spades >= 5 & hcp >= 19 & hcp <= 22) {
     return('2 spades')
@@ -58,11 +68,23 @@ open_bid = function(hand){
     return('2 diamonds')
   } else if (suits$clubs >= 4 & hcp >= 19 & hcp <= 22) {
     return('2 clubs')
+  } else if (suits$spades >= 2 & suits$spades <= 4 & 
+             suits$hearts >= 2 & suits$hearts <= 4 & 
+             suits$diamonds >= 2 & suits$diamonds <= 4 &
+             suits$clubs >= 2 & suits$clubs <= 4 &
+             hcp >= 19 & hcp <= 22) {
+    return('2 NT')
+  } else {
+    return('PASS')
   }
   
 }
 
+players = shuffle_cards()
+sapply(players, count_suits)
+sapply(players, calculate_hcp)
 sapply(players, open_bid)
+
 
 
 
