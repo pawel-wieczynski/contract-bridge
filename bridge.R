@@ -3,9 +3,10 @@ shuffle_cards = function(){
   deck = expand.grid(
     figures = c(2:10, 'J', 'Q', 'K', 'A')
     ,colors = c('spades', 'hearts', 'diamonds', 'clubs')
+    ,stringsAsFactors = FALSE
   )
   
-  deck = paste0(deck$figures, ' (', deck$colors, ')')
+  deck$cards = 1:52
   
   players = list(
     north = c()
@@ -14,25 +15,41 @@ shuffle_cards = function(){
     ,west = c()
   )
   
+  # TBD simplify
   for (i in seq_along(players)) {
-    players[[i]] = sample(deck, 13, replace = FALSE)
-    deck = setdiff(deck, players[[i]])
+    players[[i]] = deck[deck$cards %in% sample(deck$cards, 13, replace = FALSE), ]
+    deck = deck[deck$cards %in% setdiff(deck$cards, players[[i]]$cards), ]
   }
   
   return(players)
   
 }
 
+print_hand = function(hand){
+  
+  # TBD functionalize below as well
+  # TBD sorting based on cards ordinality
+  spades = paste0('Spades: ', paste(sort(hand[hand$colors == 'spades', 1]), collapse = ', '))
+  hearts = paste0('Hearts: ', paste(sort(hand[hand$colors == 'hearts', 1]), collapse = ', '))
+  diamonds = paste0('Diamonds: ', paste(sort(hand[hand$colors == 'diamonds', 1]), collapse = ', '))
+  clubs = paste0('Clubs: ', paste(sort(hand[hand$colors == 'clubs', 1]), collapse = ', '))
+  
+  cat(paste(spades, hearts, diamonds, clubs, sep = '\n'))
+  
+}
+
 calculate_hcp = function(hand) {
-  hcp = 1 * length(grep('J', hand)) + 2 * length(grep('Q', hand)) + 3 * length(grep('K', hand)) + 4 * length(grep('A', hand))
+  figures = hand$figures
+  hcp = 1 * length(grep('J', figures)) + 2 * length(grep('Q', figures)) + 3 * length(grep('K', figures)) + 4 * length(grep('A', figures))
   return(hcp)
 }
 
 count_suits = function(hand) {
-  spades = length(grep('spades', hand))
-  hearts = length(grep('hearts', hand))
-  diamonds = length(grep('diamonds', hand))
-  clubs = length(grep('clubs', hand))
+  colors = hand$colors
+  spades = length(grep('spades', colors))
+  hearts = length(grep('hearts', colors))
+  diamonds = length(grep('diamonds', colors))
+  clubs = length(grep('clubs', colors))
   return(list(spades = spades, hearts = hearts, diamonds = diamonds, clubs = clubs))
 }
 
