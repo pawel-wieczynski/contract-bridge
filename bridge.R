@@ -1,9 +1,37 @@
+get_figures = function(){
+  
+  figures = c(2:10, 'J', 'Q', 'K', 'A')
+  figures = factor(figures, ordered = TRUE, levels = figures)
+  
+  return(figures)
+  
+}
+
+get_colors = function(with_nt = FALSE){
+  
+  colors = c('clubs', 'diamonds', 'hearts', 'spades')
+  if (with_nt) colors = c(colors, 'NT')
+  colors = factor(colors, ordered = TRUE, levels = colors)
+  
+  return(colors)
+  
+}
+
+set_trump = function(trump){
+  
+  colors = get_colors()
+  no_trump_colors = setdiff(colors, trump)
+  colors = factor(colors, ordered = TRUE, levels = c(no_trump_colors, trump))
+  
+  return(colors)
+  
+}
+
 shuffle_cards = function(){
   
   deck = expand.grid(
-    figures = c(2:10, 'J', 'Q', 'K', 'A')
-    ,colors = c('spades', 'hearts', 'diamonds', 'clubs')
-    ,stringsAsFactors = FALSE
+    figures = get_figures()
+    ,colors = get_colors()
   )
   
   deck$cards = 1:52
@@ -16,7 +44,7 @@ shuffle_cards = function(){
   )
   
   # TBD simplify
-  for (i in seq_along(players)) {
+  for (i in seq_along(players)){
     players[[i]] = deck[deck$cards %in% sample(deck$cards, 13, replace = FALSE), ]
     deck = deck[deck$cards %in% setdiff(deck$cards, players[[i]]$cards), ]
   }
@@ -29,10 +57,10 @@ print_hand = function(hand){
   
   # TBD functionalize below as well
   # TBD sorting based on cards ordinality
-  spades = paste0('Spades: ', paste(sort(hand[hand$colors == 'spades', 1]), collapse = ', '))
-  hearts = paste0('Hearts: ', paste(sort(hand[hand$colors == 'hearts', 1]), collapse = ', '))
-  diamonds = paste0('Diamonds: ', paste(sort(hand[hand$colors == 'diamonds', 1]), collapse = ', '))
-  clubs = paste0('Clubs: ', paste(sort(hand[hand$colors == 'clubs', 1]), collapse = ', '))
+  spades = paste0('Spades: ', paste(sort(hand[hand$colors == 'spades', 1], decreasing = TRUE), collapse = ', '))
+  hearts = paste0('Hearts: ', paste(sort(hand[hand$colors == 'hearts', 1], decreasing = TRUE), collapse = ', '))
+  diamonds = paste0('Diamonds: ', paste(sort(hand[hand$colors == 'diamonds', 1], decreasing = TRUE), collapse = ', '))
+  clubs = paste0('Clubs: ', paste(sort(hand[hand$colors == 'clubs', 1], decreasing = TRUE), collapse = ', '))
   
   cat(paste(spades, hearts, diamonds, clubs, sep = '\n'))
   

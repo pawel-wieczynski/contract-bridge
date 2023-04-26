@@ -3,11 +3,11 @@ pacman::p_load(svDialogs)
 source('bridge.R')
 
 possible_contracts = expand.grid(
-  figures = c(1:2)
-  ,colors = c('spades', 'hearts', 'diamonds', 'clubs', 'NT')
+  levels = factor(1:2, ordered = TRUE)
+  ,colors = get_colors(with_nt = TRUE)
 )
 
-possible_contracts = c(sort(paste0(possible_contracts$figures, ' ', possible_contracts$colors)), 'PASS')
+possible_contracts = c(paste0(possible_contracts$levels, ' ', possible_contracts$colors), 'PASS')
 
 players = shuffle_cards()
 print_hand(players$south)
