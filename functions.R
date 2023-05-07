@@ -78,7 +78,7 @@ count_suits = function(hand) {
   hearts = length(grep('hearts', colors))
   diamonds = length(grep('diamonds', colors))
   clubs = length(grep('clubs', colors))
-  return(list(spades = spades, hearts = hearts, diamonds = diamonds, clubs = clubs))
+  return(c(spades = spades, hearts = hearts, diamonds = diamonds, clubs = clubs))
 }
 
 # sapply(players, count_suits)
@@ -129,7 +129,6 @@ players = shuffle_cards()
 sapply(players, count_suits)
 sapply(players, calculate_hcp)
 sapply(players, open_bid)
-
 
 
 
