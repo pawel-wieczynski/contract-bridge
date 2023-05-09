@@ -8,6 +8,7 @@ test_that('Correct data types', {
   expect_s3_class(get_colors(), 'factor')
   expect_s3_class(set_trump('spades'), 'factor')
   expect_type(next_player('north'), 'character')
+  expect_type(set_dealer(), 'character')
   
   # List is neither S3 nor S4 object
   expect_s3_class(shuffle_cards(), NA)

@@ -53,6 +53,11 @@ shuffle_cards = function(){
   
 }
 
+set_dealer = function() {
+  dealer  = sample(c('north', 'east', 'south', 'west'), 1)
+  return(dealer)
+}
+
 print_hand = function(hand){
   
   # TBD functionalize below as well

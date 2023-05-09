@@ -1,6 +1,6 @@
 if(!require('pacman')) install.packages('pacman')
 pacman::p_load(svDialogs)
-source('bridge.R')
+source('functions.R')
 
 possible_contracts = expand.grid(
   levels = factor(1:2, ordered = TRUE)
