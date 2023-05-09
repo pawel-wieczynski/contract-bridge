@@ -81,8 +81,19 @@ count_suits = function(hand) {
   return(c(spades = spades, hearts = hearts, diamonds = diamonds, clubs = clubs))
 }
 
-# sapply(players, count_suits)
-#test: rowSums = 13, colSums = 13
+next_player = function(player) {
+  
+  next_player_ = switch(
+    player
+    ,'north' = 'east'
+    ,'east' = 'south'
+    ,'south' = 'west'
+    ,'west' = 'north'
+  )
+  
+  return(next_player_)
+  
+}
 
 # Openings
 open_bid = function(hand){
@@ -121,6 +132,45 @@ open_bid = function(hand){
     return('2 NT')
   } else {
     return('PASS')
+  }
+  
+}
+
+answer_after_open = function(hand, open) {
+  
+  hcp = calculate_hcp(hand)
+  suits = count_suits(hand)
+  
+  if (open == '1 spades') {
+    if (hcp >= 7 & suits['spades'] >= 3) {
+      return('2 spades')
+    } else if (hcp >= 13 & suits['spades'] >= 3) {
+      return('spades')
+    }
+  }
+  
+  else if (open == '1 hearts') {
+    if (hcp >= 7 & suits['hearts'] >= 3) {
+      return('2 hearts')
+    } else if (hcp >= 13 & suits['hearts'] >= 3) {
+      return('hearts')
+    }
+  }
+  
+  else if (open == '1 diamonds') {
+    if (hcp >= 7 & suits['diamonds'] >= 3) {
+      return('2 diamonds')
+    } else if (hcp >= 13 & suits['diamonds'] >= 3) {
+      return('diamonds')
+    }
+  }
+  
+  else if (open == '1 clubs') {
+    if (hcp >= 7 & suits['clubs'] >= 3) {
+      return('2 clubs')
+    } else if (hcp >= 13 & suits['clubs'] >= 3) {
+      return('clubs')
+    }
   }
   
 }

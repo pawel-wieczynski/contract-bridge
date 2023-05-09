@@ -7,6 +7,7 @@ test_that('Correct data types', {
   expect_s3_class(get_figures(), 'factor')
   expect_s3_class(get_colors(), 'factor')
   expect_s3_class(set_trump('spades'), 'factor')
+  expect_type(next_player('north'), 'character')
   
   # List is neither S3 nor S4 object
   expect_s3_class(shuffle_cards(), NA)
@@ -43,4 +44,11 @@ test_that('After shuffle number of cards in each suit is 13', {
 
 test_that('After shuffle every player has 13 cards', {
   expect_equal(sum(colSums(sapply(players, count_suits)) == 13), 4)
+})
+
+test_that('Correct sequence of players.', {
+  expect_equal(next_player('north'), 'east')
+  expect_equal(next_player('east'), 'south')
+  expect_equal(next_player('south'), 'west')
+  expect_equal(next_player('west'), 'north')
 })
