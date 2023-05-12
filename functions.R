@@ -7,14 +7,60 @@ get_figures = function(){
   
 }
 
-get_colors = function(with_nt = FALSE){
+get_colors = function(with_nt = FALSE, icons = FALSE){
   
-  colors = c('clubs', 'diamonds', 'hearts', 'spades')
+  if (icons) {
+    colors = c('♣', '♦', '♥', '♠')
+  } else {
+    colors = c('clubs', 'diamonds', 'hearts', 'spades')
+  }
+  
   if (with_nt) colors = c(colors, 'NT')
   colors = factor(colors, ordered = TRUE, levels = colors)
   
   return(colors)
   
+}
+
+icons_to_text = function(icon){
+  
+  text = switch (icon
+    ,'♣' = 'clubs'
+    ,'♦' = 'diamonds'
+    ,'♥' = 'hearts'
+    ,'♠' = 'spades'
+  )
+  
+  return(text)
+  
+}
+
+replace_icon = function(text){
+  
+  text = sub('♣', ' clubs', text)
+  text = sub('♦', ' diamonds', text)
+  text = sub('♥', ' hearts', text)
+  text = sub('♠', ' spades', text)
+  
+  return(text)
+  
+}
+
+get_all_bids = function(){
+  
+  bids = expand.grid(
+    colors = get_colors(with_nt = TRUE, icons = TRUE)
+    ,levels = factor(1:7, ordered = TRUE)
+  )
+  
+  bids = c(paste0(bids$levels, bids$colors), 'PASS')
+  
+  return(bids)
+  
+}
+
+get_possible_bids = function(level = 1, color = 'clubs') {
+  # function for eliminating already used bids
 }
 
 set_trump = function(trump){
@@ -61,13 +107,15 @@ set_dealer = function() {
 print_hand = function(hand){
   
   # TBD functionalize below as well
-  # TBD sorting based on cards ordinality
-  spades = paste0('Spades: ', paste(sort(hand[hand$colors == 'spades', 1], decreasing = TRUE), collapse = ', '))
-  hearts = paste0('Hearts: ', paste(sort(hand[hand$colors == 'hearts', 1], decreasing = TRUE), collapse = ', '))
-  diamonds = paste0('Diamonds: ', paste(sort(hand[hand$colors == 'diamonds', 1], decreasing = TRUE), collapse = ', '))
-  clubs = paste0('Clubs: ', paste(sort(hand[hand$colors == 'clubs', 1], decreasing = TRUE), collapse = ', '))
+
+  spades = paste0('♠ ', paste(sort(hand[hand$colors == 'spades', 1], decreasing = TRUE), collapse = ''))
+  hearts = paste0('♥ ', paste(sort(hand[hand$colors == 'hearts', 1], decreasing = TRUE), collapse = ''))
+  diamonds = paste0('♦ ', paste(sort(hand[hand$colors == 'diamonds', 1], decreasing = TRUE), collapse = ''))
+  clubs = paste0('♣ ', paste(sort(hand[hand$colors == 'clubs', 1], decreasing = TRUE), collapse = ''))
   
-  cat(paste(spades, hearts, diamonds, clubs, sep = '\n'))
+  hand_string = paste(spades, hearts, diamonds, clubs, sep = '\n')
+  
+  return(hand_string)
   
 }
 
@@ -180,10 +228,10 @@ answer_after_open = function(hand, open) {
   
 }
 
-players = shuffle_cards()
-sapply(players, count_suits)
-sapply(players, calculate_hcp)
-sapply(players, open_bid)
+# players = shuffle_cards()
+# sapply(players, count_suits)
+# sapply(players, calculate_hcp)
+# sapply(players, open_bid)
 
 
 
