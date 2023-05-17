@@ -40,11 +40,11 @@ test_that('Total amount of HCP is 40', {
 })
 
 test_that('After shuffle number of cards in each suit is 13', {
-  expect_equal(sum(rowSums(sapply(players, count_suits)) == 13), 4)
+  expect_equal(sum(rowSums(sapply(shuffle_cards(), count_suits)) == 13), 4)
 })
 
 test_that('After shuffle every player has 13 cards', {
-  expect_equal(sum(colSums(sapply(players, count_suits)) == 13), 4)
+  expect_equal(sum(colSums(sapply(shuffle_cards(), count_suits)) == 13), 4)
 })
 
 test_that('Correct sequence of players.', {

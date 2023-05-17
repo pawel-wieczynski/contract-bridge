@@ -154,6 +154,7 @@ open_bid = function(hand){
   hcp = calculate_hcp(hand)
   suits = count_suits(hand)
   
+  # 1st level openings ----
   if (suits['spades'] >= 5 & hcp >= 12 & hcp <= 18) {
     return('1 spades')
   } else if (suits['hearts'] >= 5 & hcp >= 12 & hcp <= 18) {
@@ -169,6 +170,7 @@ open_bid = function(hand){
              hcp >= 16 & hcp <= 18) {
     return('1 NT')
     
+  # 2nd level openings ----
   } else if (suits['spades'] >= 5 & hcp >= 19 & hcp <= 22) {
     return('2 spades')
   } else if (suits['hearts'] >= 5 & hcp >= 19 & hcp <= 22) {
@@ -183,6 +185,17 @@ open_bid = function(hand){
              suits['clubs'] >= 2 & suits['clubs'] <= 4 &
              hcp >= 19 & hcp <= 22) {
     return('2 NT')
+    
+  # 3rd level openings ----
+  } else if (suits['spades'] >= 7 & hcp >= 5 & hcp <= 7) {
+    return('3 spades')
+  } else if (suits['hearts'] >= 7 & hcp >= 5 & hcp <= 7) {
+    return('3 hearts')
+  } else if (suits['diamonds'] >= 7 & hcp >= 5 & hcp <= 7) {
+    return('3 diamonds')
+  } else if (suits['clubs'] >= 7 & hcp >= 5 & hcp <= 7) {
+    return('3 clubs')
+    
   } else {
     return('PASS')
   }

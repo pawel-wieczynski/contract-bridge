@@ -14,29 +14,39 @@ openingsServer <- function(id) {
       paste0('Your hand: \n', print_hand(hand()))
     })
     
+    # Create a reactive value for the result text
+    result = reactiveVal('')  
+    
     observeEvent(input$submit, {
       # Your bid
       bid = input$bid
       
       # Check the bid
-      result = (replace_icon(bid) == open_bid(hand()))
+      valid = (replace_icon(bid) == open_bid(hand()))
       
-      output$result = renderText({
-        if(result) {
+      result(
+        if(valid) {
           'Your bid is valid.'
         } else {
           paste0('Your bid is not valid. The correct one is: ', open_bid(hand()))
         }
-      })
+      )
+    })
+    
+    output$result = renderText({
+      # Use the reactive value here
+      result()
     })
     
     observeEvent(input$new_hand, {
       hand(shuffle_cards()$south)
+      # Clear the result when a new hand is generated
+      result('')
     })
   })
 }
 
 # Define server logic 
 server <- function(input, output, session) {
-  openingsServer("openings")
+  openingsServer('openings')
 }
