@@ -22,16 +22,29 @@ get_colors = function(with_nt = FALSE, icons = FALSE){
   
 }
 
-icons_to_text = function(icon){
+suit_to_icon = function(suit) {
   
-  text = switch (icon
-    ,'♣' = 'clubs'
-    ,'♦' = 'diamonds'
-    ,'♥' = 'hearts'
-    ,'♠' = 'spades'
-  )
+  suit_icons = c(
+    'clubs' = '♣'
+    , 'diamonds' = '♦'
+    , 'hearts' = '♥'
+    , 'spades' = '♠'
+    , 'NT' = 'NT')
   
-  return(text)
+  return(suit_icons[suit])
+  
+}
+
+icon_to_suit = function(icon) {
+  
+  icon_suits = c(
+    '♣' = 'clubs'
+    , '♦' = 'diamonds'
+    , '♥' = 'hearts'
+    , '♠' = 'spades'
+    , 'NT' = 'NT')
+  
+  return(icon_suits[icon])
   
 }
 

@@ -28,6 +28,24 @@ test_that('Correct output size', {
   expect_equal(length(shuffle_cards()), 4)
 })
 
+test_that('suit_to_icon works as expected', {
+  expect_equal(unname(suit_to_icon('hearts')), '♥')
+  expect_equal(unname(suit_to_icon('clubs')), '♣')
+  expect_equal(unname(suit_to_icon('diamonds')), '♦')
+  expect_equal(unname(suit_to_icon('spades')), '♠')
+  expect_equal(unname(suit_to_icon('NT')), 'NT')
+  expect_error(unname(suit_to_icon('abc')), NA)
+})
+
+test_that('icon_to_suit works as expected', {
+  expect_equal(unname(icon_to_suit('♥')), 'hearts')
+  expect_equal(unname(icon_to_suit('♣')), 'clubs')
+  expect_equal(unname(icon_to_suit('♦')), 'diamonds')
+  expect_equal(unname(icon_to_suit('♠')), 'spades')
+  expect_equal(unname(icon_to_suit('NT')), 'NT')
+  expect_error(unname(icon_to_suit('abc')), NA)
+})
+
 test_that('Trump is set correctly', {
   expect_equal(levels(set_trump('clubs'))[4], 'clubs')
   expect_equal(levels(set_trump('diamonds'))[4], 'diamonds')
@@ -53,3 +71,4 @@ test_that('Correct sequence of players.', {
   expect_equal(next_player('south'), 'west')
   expect_equal(next_player('west'), 'north')
 })
+
