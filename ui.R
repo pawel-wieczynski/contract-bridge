@@ -1,5 +1,6 @@
 library(shiny)
 source('functions.R')
+source('bidding_system\\openings.R')
 
 # Define the UI for openings game
 openingsUI <- function(id) {

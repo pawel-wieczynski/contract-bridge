@@ -1,5 +1,6 @@
 library(shiny)
 source('functions.R')
+source('bidding_system\\openings.R')
 
 # Define the server logic for openings game
 openingsServer <- function(id) {
